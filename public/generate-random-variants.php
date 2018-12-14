@@ -25,22 +25,31 @@ while (count($variants) < $tocreate)
   {
   //Randomly pick a gene
   shuffle($genes);
-  $gene = $genes[0];
+  $genesymbol = $genes[0];
 
   //Add details about gene to array if already found, otherwise look them up
-  if (isset($savedgenedetails[$gene]) == true)
+  if (isset($savedgenedetails[$genesymbol]) == true)
     {
-    $genedetails = $savedgenedetails[$gene];
+    $genedetails = $savedgenedetails[$genesymbol];
     }
   else
     {
+    //Get details about the gene to store for future cycles
     $genedetails = array();
 
-    $savedgenedetails[$gene] = $genedetails;
+    include 'find-ids.php';
+    include 'get-exons.php';
+
+    $genedetails['Exons'] = $exons;
+
+    $savedgenedetails[$genesymbol] = $genedetails;
     }
 
-  array_push($variants,$gene);
+  array_push($variants,$genesymbol);
   }
+
+print_r($savedgenedetails);
+echo "<br>";
 
 //Echo variants as array if testing is true
 if ($testing == true)
