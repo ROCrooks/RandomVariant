@@ -17,7 +17,7 @@ else
   $testing = false;
 
 //Array to store gene details so they don't have to be looked up from APIs each time
-$genedetails = array();
+$savedgenedetails = array();
 
 //Generate the variants
 $variants = array();
@@ -26,6 +26,18 @@ while (count($variants) < $tocreate)
   //Randomly pick a gene
   shuffle($genes);
   $gene = $genes[0];
+
+  //Add details about gene to array if already found, otherwise look them up
+  if (isset($savedgenedetails[$gene]) == true)
+    {
+    $genedetails = $savedgenedetails[$gene];
+    }
+  else
+    {
+    $genedetails = array();
+
+    $savedgenedetails[$gene] = $genedetails;
+    }
 
   array_push($variants,$gene);
   }
