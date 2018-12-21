@@ -42,6 +42,11 @@ while (count($variants) < $tocreate)
     include 'find-ids.php';
     include 'get-exons.php';
 
+    //Make the exon ranges exclude the first and last codons
+    $exons[0]['Start'] = 3;
+    $last = count($exons)-1;
+    $exons[$last]['End'] = $exons[$last]['End']-2;
+
     $genedetails['Exons'] = $exons;
 
     //Get the gene sequence from the CDS identified by the ENST ID
@@ -50,13 +55,15 @@ while (count($variants) < $tocreate)
     $savedgenedetails[$genesymbol] = $genedetails;
     }
 
-  //Get the exons
+  //Get the exons and choose position that isn't at an exon boundary or N or C terminal residue
   $exons = $savedgenedetails[$genesymbol]['Exons'];
   shuffle($exons);
+  $exon = $exons[0];
+  $rangestart = $exon['Start'];
+  $rangeend = $exon['End'];
+  $position = mt_rand($rangestart,$rangeend);
 
-  //Get the size of the nucleotide sequence
-  $last = strlen($savedgenedetails[$genesymbol]['Sequence']);
-  $last = $last['End']-3;
+  echo $position . "<br>";
 
   array_push($variants,$genesymbol);
   }
