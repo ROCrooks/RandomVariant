@@ -4,7 +4,7 @@ $testing = true;
 
 //Default to creating 200 variants, using the genes in the installed gene list, and only generating missense variants
 if (isset($tocreate) == false)
-  $tocreate = 20;
+  $tocreate = 50;
 else
   $testing = false;
 
@@ -63,7 +63,20 @@ while (count($variants) < $tocreate)
   $rangeend = $exon['End'];
   $position = mt_rand($rangestart,$rangeend);
 
-  echo $position . "<br>";
+  //Get the nucleotide where the variant is and generate the variant
+  $substrposition = $position-1;
+  $nucleotide = substr($genedetails['Sequence'],$substrposition,1);
+  $options = array("A","C","G","T");
+  foreach ($options as $optionskey=>$option)
+    {
+    //Remove from options if this is the original nucleotide
+    if ($option == $nucleotide)
+      unset($options[$optionskey]);
+    }
+  shuffle($options);
+  $newvariant = $options[0];
+
+  echo $genesymbol . " c." . $position . " " . $nucleotide . "&gt;" . $newvariant . "<br>";
 
   array_push($variants,$genesymbol);
   }
