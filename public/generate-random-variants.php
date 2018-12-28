@@ -4,7 +4,7 @@ $testing = true;
 
 //Default to creating 200 variants, using the genes in the installed gene list, and only generating missense variants
 if (isset($tocreate) == false)
-  $tocreate = 50;
+  $tocreate = 200;
 else
   $testing = false;
 
@@ -76,12 +76,27 @@ while (count($variants) < $tocreate)
   shuffle($options);
   $newvariant = $options[0];
 
-  echo $genesymbol . " c." . $position . " " . $nucleotide . "&gt;" . $newvariant . "<br>";
+  //Format variant description
+  $variantdescription = $genesymbol . " c." . $position . " " . $nucleotide . "&gt;" . $newvariant;
 
-  array_push($variants,$genesymbol);
+  //Keep a count of the variants that have been generated
+  if (in_array($variantdescription,$variants) == false)
+    {
+    //Initiate paragraph for first variant
+    if (count($variants) == 0)
+      echo "<p>";
+    else
+      echo "<br>";
+
+    //Add to the list of variants already generated
+    array_push($variants,$genesymbol);
+    echo $variantdescription;
+    }
   }
 
-//Echo variants as array if testing is true
-if ($testing == true)
-  print_r($variants);
+//Close the paragraph where the variants are listed
+echo "</p>";
+
+//Clear the buffer
+unset($variants);
 ?>
