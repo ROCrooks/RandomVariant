@@ -78,8 +78,6 @@ $recycle = 0;
 $variants = array();
 while (checkfinished($tocreate,$types,$split,$counts,$recycle) == false)
   {
-  echo "Looped<br>";
-
   //Randomly pick a gene
   shuffle($genes);
   $genesymbol = $genes[0];
